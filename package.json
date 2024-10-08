@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "vite",
     "dev:functions": "netlify dev",
-    "build": "tsc -b && npm run build:functions && vite build",
+    "build": "vite build",
     "build:functions": "tsc -p src/functions/tsconfig.json",
     "preview": "vite preview",
     "lint": "eslint . --ext .ts,.tsx src/",
