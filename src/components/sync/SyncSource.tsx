@@ -10,7 +10,6 @@ export const SyncSource: React.FC = () => {
     setSourceEnvironmentId,
     sourceApiKey,
     setSourceApiKey,
-    sourceFile,
     setSourceFile,
     setSourceClient,
   } = useContext(WizardContext);
