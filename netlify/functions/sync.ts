@@ -1,4 +1,4 @@
-// import { diffEnvironments } from "@kontent-ai/data-ops";
+import { syncRun } from "@kontent-ai/data-ops";
 import { Handler } from "@netlify/functions";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
@@ -8,6 +8,17 @@ const diffParamsSchema = z.strictObject({
   sourceApiKey: z.string(),
   targetEnvironmentId: z.string(),
   targetApiKey: z.string(),
+  entities: z.array(z.enum([
+    "contentTypes",
+    "contentTypeSnippets",
+    "taxonomies",
+    "collections",
+    "assetFolders",
+    "spaces",
+    "languages",
+    "webSpotlight",
+    "workflows",
+  ])),
 });
 
 export const handler: Handler = async (event) => {
@@ -35,15 +46,21 @@ export const handler: Handler = async (event) => {
     };
   }
 
-  // const diffHtml = await diffEnvironments({
-  //   sourceEnvironmentId: result.data.sourceEnvironmentId,
-  //   sourceApiKey: result.data.sourceApiKey,
-  //   targetEnvironmentId: result.data.targetEnvironmentId,
-  //   targetApiKey: result.data.targetApiKey,
-  // });
+  try {
+    await syncRun({
+      ...result.data,
+      entities: Object.fromEntries(
+        result.data.entities.map(key => [key, key == "webSpotlight" ? true : () => true]),
+      ),
+    });
 
-  return {
-    statusCode: 200,
-    body: "diffHtml",
-  };
+    return {
+      statusCode: 200,
+    };
+  } catch (e) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify(e, Object.getOwnPropertyNames(e)),
+    };
+  }
 };

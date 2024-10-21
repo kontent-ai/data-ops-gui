@@ -5,7 +5,7 @@
 
   "overrides": [
     {
-      "files": ["src/**/*.ts"],
+      "files": ["src/**/*.ts", "netlify/**/*.ts"],
       "excludedFiles": ["src/log.ts", "vite.config.ts"]
     }
   ],

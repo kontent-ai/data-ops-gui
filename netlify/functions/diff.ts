@@ -1,4 +1,4 @@
-import { syncModelRun } from "@kontent-ai/data-ops";
+import { syncDiff } from "@kontent-ai/data-ops";
 import { Handler } from "@netlify/functions";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
@@ -47,10 +47,17 @@ export const handler: Handler = async (event) => {
   }
 
   try {
-    await syncModelRun(result.data);
+    const diffHtml = await syncDiff({
+      sourceEnvironmentId: result.data.sourceEnvironmentId,
+      sourceApiKey: result.data.sourceApiKey,
+      targetEnvironmentId: result.data.targetEnvironmentId,
+      targetApiKey: result.data.targetApiKey,
+      entities: result.data.entities,
+    });
 
     return {
       statusCode: 200,
+      body: JSON.stringify({ html: diffHtml }),
     };
   } catch (e) {
     return {
