@@ -18,7 +18,7 @@
     "fmt:check": "dprint check"
   },
   "dependencies": {
-    "@kontent-ai/data-ops": "^2.2.1",
+    "@kontent-ai/data-ops": "^2.3.6",
     "@kontent-ai/management-sdk": "^7.3.0",
     "@kontent-ai/stylekit": "^1.0.0",
     "@netlify/functions": "^2.8.2",
